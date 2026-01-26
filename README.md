@@ -2,6 +2,33 @@
 
 A Streamlit application for downloading models from HuggingFace.
 
+## Screenshots
+
+### Main Page
+![Main Page](assets/MainPage.png)
+
+The main interface where you can enter a HuggingFace model repository name to search and download.
+
+Turn on toggle button to download model where to the directory where user set the path in .env file.
+
+If toggle is off, selected model will be downloaded to basic `HF_CACHE` directory.
+
+### Search Result
+![Search Result](assets/SearchResult.png)
+
+The list of search result will be shown at the main page.
+
+User can click View button to see detailed information.
+
+### Detail View
+![Modal View](assets/ModalView.png)
+
+Detailed view about repository information.
+
+User can download whole or selected items.
+
+Provides progress bar,
+
 ## Requirements
 
 - Python 3.11+
