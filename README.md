@@ -5,7 +5,7 @@ A Streamlit application for downloading models from HuggingFace.
 ## Requirements
 
 - Python 3.11+
-- HuggingFace account and API token
+- HuggingFace account and API token(optional)
 
 ## Setup
 
