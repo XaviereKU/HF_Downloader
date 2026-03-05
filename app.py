@@ -156,11 +156,11 @@ def render_selection_controls(model_id: str, files: list, file_sizes: dict):
     with col1:
         if st.button("Select All", key=f"sel_all_{model_id}", use_container_width=True):
             st.session_state.selected_files = set(files)
-            st.rerun()
+            st.rerun(scope="fragment")
     with col2:
         if st.button("Deselect All", key=f"desel_all_{model_id}", use_container_width=True):
             st.session_state.selected_files = set()
-            st.rerun()
+            st.rerun(scope="fragment")
 
     selected_size = sum(file_sizes.get(f, 0) or 0 for f in st.session_state.selected_files)
     total_size = sum(file_sizes.get(f, 0) or 0 for f in files)
@@ -234,11 +234,11 @@ def render_file_list(model_id: str, files: list, file_sizes: dict):
         if dir_selected and not all_selected:
             for f in dir_file_paths:
                 st.session_state.selected_files.add(f)
-            st.rerun()
+            st.rerun(scope="fragment")
         elif not dir_selected and all_selected:
             for f in dir_file_paths:
                 st.session_state.selected_files.discard(f)
-            st.rerun()
+            st.rerun(scope="fragment")
 
         # Group by subdirectory
         subdir_files = {}
@@ -272,11 +272,11 @@ def render_file_list(model_id: str, files: list, file_sizes: dict):
                 if sub_selected and not subdir_all_selected:
                     for f in subdir_paths:
                         st.session_state.selected_files.add(f)
-                    st.rerun()
+                    st.rerun(scope="fragment")
                 elif not sub_selected and subdir_all_selected:
                     for f in subdir_paths:
                         st.session_state.selected_files.discard(f)
-                    st.rerun()
+                    st.rerun(scope="fragment")
 
                 # Files in subdirectory
                 for file_info in sorted(subdir_list, key=lambda x: x["display_name"]):
@@ -364,6 +364,7 @@ def render_download_section(model_id: str, local_dir: str, token: str):
 # ============================================
 # Modal Dialog for File Browser
 # ============================================
+@st.fragment
 @st.dialog("Model Files", width="large")
 def show_model_dialog(model_id: str, local_dir: str):
     """Show modal dialog with file browser."""
@@ -439,19 +440,14 @@ with st.sidebar:
 
     # Download directory
     st.subheader("Download Location")
-    default_local_dir = os.getenv("HF_LOCAL_DIR", "")
     use_local_dir = st.toggle(
         "Save to local directory",
-        value=bool(default_local_dir),
-        help="Toggle ON to save to a local directory"
+        value=False,
+        help="Toggle ON to save to /data/localmodels"
     )
 
     if use_local_dir:
-        local_dir = st.text_input(
-            "Local Directory",
-            value=default_local_dir or "/data/localmodels",
-            help="Set HF_LOCAL_DIR in .env for default"
-        )
+        local_dir = "/data/localmodels"
         st.info(f"Save to: {local_dir}")
     else:
         local_dir = ""
